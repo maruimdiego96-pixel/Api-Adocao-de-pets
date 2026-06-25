@@ -1,10 +1,13 @@
 import express from "express";
-import adoptionsController from "../controllers/adoptionsControllers";
+import adoptionController from "../controllers/adoptionController.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
+import adminMiddleware from "../middlewares/adminMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", adoptionsController.PerformAdoption);
-router.get("/my", adoptionsController.MyAdoptions);
-router.get("/", adoptionsController.AllAdoptions);      
+router.post("/", authMiddleware, adoptionController.createAdoption);
+router.get("/my", authMiddleware, adoptionController.getMyAdoption);
+
+router.get("/", authMiddleware, adminMiddleware, adoptionController.getAllAdoption);
 
 export default router;
