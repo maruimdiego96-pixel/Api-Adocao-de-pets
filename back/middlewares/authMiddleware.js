@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+import User from "../models/usersModels.js";
 
 const authMiddleware = async (req, res, next) => {
   try {
@@ -29,7 +29,7 @@ const authMiddleware = async (req, res, next) => {
       return res.status(401).json({ error: "Usuário não encontrado" });
     }
 
-    if (!user.ativo) {
+    if (!user.active) {
       return res.status(403).json({ error: "Usuário inativo" });
     }
 
