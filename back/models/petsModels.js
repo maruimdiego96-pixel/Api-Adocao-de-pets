@@ -20,17 +20,9 @@ const PetsSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    description: {
-      type: Number,
-      required: true,
-    },
-    amount: {
-      type: Number,
-      required: true,
-    },
     adopted: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   {
