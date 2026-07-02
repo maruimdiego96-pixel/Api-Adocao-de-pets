@@ -1,11 +1,11 @@
-import bookService from "../services/petsService.js";
+import petsService from "../service/petsService.js";
 
 const createPets = async (req, res, next) => {
     try {
-        const pets = await petsService.createPets(req.body);
+        const pet = await petsService.createPet(req.body);
 
         res.status(201).json({
-            message: "Pet cadastrado com sucesso",
+            message: "Pet successfully registered",
             data: pet,
         });
     } catch (error) {
@@ -29,7 +29,7 @@ const getAllPets = async (req, res, next) => {
 
 const getPetsById = async (req, res, next) => {
     try {
-        const pets = await petsService.getPetsById(req.params.id);
+        const pet = await petsService.getPetsById(req.params.id);
 
         res.status(200).json({
             message: "Pet encontrado com sucesso",
