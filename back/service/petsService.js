@@ -45,7 +45,7 @@ const getBookById = async (id) => {
     error.statusCode = 404;
     throw error;
   }
-
+};
 const getBookById = async (id) => {
   const book = await Book.findById(id);
 
