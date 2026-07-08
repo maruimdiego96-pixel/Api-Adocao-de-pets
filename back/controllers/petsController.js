@@ -67,16 +67,16 @@ const deactivatePets = async (req, res, next) => {
     }
 };
 const updatePet = async (req, res, next) => {
-  try {
-    const pet = await petService.updatePet(req.params.id, req.body);
+    try {
+        const pet = await petService.updatePet(req.params.id, req.body);
 
-    res.status(200).json({
-      message: "Pet atualizado com sucesso",
-      data: pet,
-    });
-  } catch (error) {
-    next(error);
-  }
+        res.status(200).json({
+            message: "Pet atualizado com sucesso",
+            data: pet,
+        });
+    } catch (error) {
+        next(error);
+    }
 };
 
 const activatePets = async (req, res, next) => {
