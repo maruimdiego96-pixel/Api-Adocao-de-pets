@@ -5,7 +5,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 
 import authRoutes from "./routes/authRoutes.js";
-// import userRoutes from "./routes/userRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import petsRoutes from "./routes/petsRoutes.js"
 // import adoptionsRoutes from "./routes/adoptionsRoutes.js";
 
@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRoutes);
-// app.use("/users", userRoutes);
+app.use("/users", userRoutes);
 app.use("/pets", petsRoutes);
 // app.use("/adoptions", adoptionsRoutes);
 
