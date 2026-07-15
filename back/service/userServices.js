@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
-import User from "../models/User.js";
-import Loan from "../models/Loan.js";
+import User from "../models/usersModels.js";
 
 const getAllUsers = async () => {
   return User.find().sort({ createdAt: -1 });
@@ -93,19 +92,6 @@ const deactivateUser = async (id) => {
 
   if (!user.ativo) {
     const error = new Error("Usuário já está desativado");
-    error.statusCode = 400;
-    throw error;
-  }
-
-  const activeLoansCount = await Loan.countDocuments({
-    userId: id,
-    status: "ativo",
-  });
-
-  if (activeLoansCount > 0) {
-    const error = new Error(
-      "Não é possível desativar usuário com empréstimo ativo"
-    );
     error.statusCode = 400;
     throw error;
   }
