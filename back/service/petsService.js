@@ -1,5 +1,5 @@
 import Pets from "../models/petsModels.js";
-import adoption from "../models/ adoptionsModels.js";
+import adoption from "../models/adoptionsModels.js";
 
 const createPet = async (data) => {
   const { name, race, age, species, } = data;
@@ -21,14 +21,21 @@ const createPet = async (data) => {
 };
 
 const getAllPets = async () => {
-  return pet.find().sort({ createdAt: -1 });
+  const pets = await Pets.find({
+    adopted: false,
+    active: true,
+  });
+
+  console.log("Pets encontrados:", pets);
+
+  return pets;
 };
 
 const getPetsById = async (id) => {
-  const pet = await pet.findById(id);
+  const pet = await Pets.findById(id);
 
   if (!pet) {
-    const error = new Error("Pet não encontrado");
+    const error = new Error("Animal not found");
     error.statusCode = 404;
     throw error;
   }
@@ -36,37 +43,49 @@ const getPetsById = async (id) => {
   return pet;
 };
 
-const searchPetsByRace = async (race) => {
-  return pet.find({
-    race: { $regex: race, $options: "i" },
-  }).sort({ pet: 1 });
-};
-
 const updatePet = async (id, data) => {
-  const pet = await Pet.findById(id);
+  const pet = await Pets.findById(id);
 
   if (!pet) {
-    const error = new Error("Pet não encontrado");
+    const error = new Error("Pet not found");
     error.statusCode = 404;
     throw error;
   }
 
+  if (data.name !== undefined) {
+    pet.name = data.name;
+  }
 
   if (data.race !== undefined) {
     pet.race = data.race;
-  }
-
-  if (data.species !== undefined) {
-    pet.species = data.species
   }
 
   if (data.age !== undefined) {
     pet.age = data.age;
   }
 
-  if (data.name !== undefined) {
-    pet.name = data.name;
+  await pet.save();
+
+  return pet;
+};
+
+
+const activatePet = async (id) => {
+  const pet = await Pets.findById(id);
+
+  if (!pet) {
+    const error = new Error("Pet not found");
+    error.statusCode = 404;
+    throw error;
   }
+
+  if (pet.active) {
+    const error = new Error("Pet is already active");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  pet.active = true;
 
   await pet.save();
 
@@ -74,56 +93,32 @@ const updatePet = async (id, data) => {
 };
 
 const deactivatePet = async (id) => {
-  const pet = await pet.findById(id);
-
+  const pet = await Pets.findById(id);
   if (!pet) {
-    const error = new Error("Pet não encontrado");
+    const error = new Error("Pet not found");
     error.statusCode = 404;
     throw error;
   }
 
-  if (!pet.ativo) {
-    const error = new Error("Pet já está desativado");
+  if (!pet.active) {
+    const error = new Error("This pet has already been deactivated.");
     error.statusCode = 400;
     throw error;
   }
 
-  const activeLoansCount = await Loan.countDocuments({
-    bookId: id,
-    status: "ativo",
+  const adoptionExists = await adoption.findOne({
+    PetId: id,
   });
 
-  if (activeLoansCount > 0) {
+  if (adoptionExists) {
     const error = new Error(
-      "Não é possível desativar o pet com empréstimos ativos"
+      "It is not possible to deactivate a pet that has already been adopted."
     );
     error.statusCode = 400;
     throw error;
   }
 
-  pet.ativo = false;
-
-  await pet.save();
-
-  return pet;
-};
-
-const activatePet = async (id) => {
-  const pet = await Pet.findById(id);
-
-  if (!pet) {
-    const error = new Error("Pet não encontrado");
-    error.statusCode = 404;
-    throw error;
-  }
-
-  if (pet.ativo) {
-    const error = new Error("Pet já está ativo");
-    error.statusCode = 400;
-    throw error;
-  }
-
-  pet.ativo = true;
+  pet.active = false;
 
   await pet.save();
 
@@ -135,7 +130,6 @@ export default {
   createPet,
   getAllPets,
   getPetsById,
-  searchPetsByRace,
   updatePet,
   deactivatePet,
   activatePet,

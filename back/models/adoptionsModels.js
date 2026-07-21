@@ -9,12 +9,12 @@ const AdoptionsSchema = new mongoose.Schema(
         },
         PetId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Pet",
+            ref: "Pets",
             required: true,
         },
         AdoptionDate: {
             type: Date,
-            required: true,
+            default: Date.now
         },
     },
     {

@@ -5,12 +5,12 @@ import adminMiddleware from "../middlewares/adminMiddleware.js";
 
 const router = express.Router();
 
-// router.get("/", petsController.getAllPets);
-// router.get("/:id", petsController.getPetsById);
+router.get("/", petsController.getAllPets);
+router.get("/:id", petsController.getPetsById);
 
 router.post("/", authMiddleware, adminMiddleware, petsController.createPets)
-// router.put("/:id", authMiddleware, adminMiddleware, petsController.updatePets);
-// router.patch("/:id/deactivate", authMiddleware, adminMiddleware, petsController.deactivatePet);
-// router.patch("/:id/activate", authMiddleware, adminMiddleware, petController.activatePet);
+router.put("/:id", authMiddleware, adminMiddleware, petsController.updatePet);
+router.patch("/:id/deactivate", authMiddleware, adminMiddleware, petsController.deactivatePet);
+router.patch("/:id/activate", authMiddleware, adminMiddleware, petsController.activatePet);
 
 export default router;

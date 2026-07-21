@@ -1,5 +1,8 @@
 import bcrypt from "bcryptjs";
 import User from "../models/usersModels.js";
+import Adoptions from "../models/adoptionsModels.js";
+
+
 
 const getAllUsers = async () => {
   return User.find().sort({ createdAt: -1 });
@@ -19,7 +22,7 @@ const getUserById = async (id) => {
 
 const updateMe = async (userId, data) => {
   delete data.role;
-  delete data.ativo;
+  delete data.active;
   delete data.password;
 
   if (data.email) {
@@ -90,13 +93,26 @@ const deactivateUser = async (id) => {
     throw error;
   }
 
-  if (!user.ativo) {
+  if (!user.active) {
     const error = new Error("Usuário já está desativado");
     error.statusCode = 400;
     throw error;
   }
 
-  user.ativo = false;
+  const activeLoansCount = await Adoptions.countDocuments({
+    userId: id,
+    status: "active",
+  });
+
+  if (activeLoansCount > 0) {
+    const error = new Error(
+      "Não é possível desativar usuário com uma adoção ativa"
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  user.active = false;
 
   await user.save();
 
@@ -112,13 +128,13 @@ const activateUser = async (id) => {
     throw error;
   }
 
-  if (user.ativo) {
+  if (user.active) {
     const error = new Error("Usuário já está ativo");
     error.statusCode = 400;
     throw error;
   }
 
-  user.ativo = true;
+  user.active = true;
 
   await user.save();
 

@@ -7,7 +7,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import petsRoutes from "./routes/petsRoutes.js"
-// import adoptionsRoutes from "./routes/adoptionsRoutes.js";
+import adoptionsRoutes from "./routes/adoptionsRoutes.js";
 
 // import notFound from "./middlewares/notFound.js";
 // import errorHandler from "./middlewares/errorHandler.js";
@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/pets", petsRoutes);
-// app.use("/adoptions", adoptionsRoutes);
+app.use("/adoptions", adoptionsRoutes);
 
 
 // app.use(notFound);
