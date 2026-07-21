@@ -18,7 +18,7 @@ const getAllPets = async (req, res, next) => {
         const pets = await petsService.getAllPets();
 
         res.status(200).json({
-            message: "Pet encontrado com sucesso",
+            message: "Pets successfully found",
             total: pets.length,
             data: pets,
         });
@@ -32,7 +32,7 @@ const getPetsById = async (req, res, next) => {
         const pet = await petsService.getPetsById(req.params.id);
 
         res.status(200).json({
-            message: "Pet encontrado com sucesso",
+            message: "Pet successfully found sucesso",
             data: pet,
         });
     } catch (error) {
@@ -40,23 +40,9 @@ const getPetsById = async (req, res, next) => {
     }
 };
 
-const searchPetsByRace = async (req, res, next) => {
+const deactivatePet = async (req, res, next) => {
     try {
-        const pets = await petService.searchPetsByRace(req.params.title);
-
-        res.status(200).json({
-            message: "Pets encontrados por raça com sucesso",
-            total: pets.length,
-            data: pets,
-        });
-    } catch (error) {
-        next(error);
-    }
-};
-
-const deactivatePets = async (req, res, next) => {
-    try {
-        const pet = await petService.deactivateBook(req.params.id);
+        const pet = await petsService.deactivatePet(req.params.id);
 
         res.status(200).json({
             message: "Pet desativado com sucesso",
@@ -67,21 +53,21 @@ const deactivatePets = async (req, res, next) => {
     }
 };
 const updatePet = async (req, res, next) => {
-  try {
-    const pet = await petService.updatePet(req.params.id, req.body);
+    try {
+        const pet = await petsService.updatePet(req.params.id, req.body);
 
-    res.status(200).json({
-      message: "Pet atualizado com sucesso",
-      data: pet,
-    });
-  } catch (error) {
-    next(error);
-  }
+        res.status(200).json({
+            message: "Pet atualizado com sucesso",
+            data: pet,
+        });
+    } catch (error) {
+        next(error);
+    }
 };
 
-const activatePets = async (req, res, next) => {
+const activatePet = async (req, res, next) => {
     try {
-        const pet = await petService.activatePet(req.params.id);
+        const pet = await petsService.activatePet(req.params.id);
 
         res.status(200).json({
             message: "Pet ativado com sucesso",
@@ -96,8 +82,7 @@ export default {
     createPets,
     getAllPets,
     getPetsById,
-    searchPetsByRace,
     updatePet,
-    deactivatePets,
-    activatePets,
+    deactivatePet,
+    activatePet,
 };
