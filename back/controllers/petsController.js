@@ -65,6 +65,7 @@ const updatePet = async (req, res, next) => {
     }
 };
 
+
 const activatePet = async (req, res, next) => {
     try {
         const pet = await petsService.activatePet(req.params.id);
