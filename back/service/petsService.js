@@ -126,7 +126,6 @@ const deactivatePet = async (id) => {
 };
 
 
-
 export default {
   createPet,
   getAllPets,
