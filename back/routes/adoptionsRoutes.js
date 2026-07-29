@@ -6,7 +6,7 @@ import adminMiddleware from "../middlewares/adminMiddleware.js";
 const router = express.Router();
 
 router.post("/", authMiddleware, adoptionController.CompleteTheAdoption);
-router.get("/me", authMiddleware, adoptionController.getMyAdoption);
+router.get("/my", authMiddleware, adoptionController.getMyAdoption);
 
  router.get("/", authMiddleware, adminMiddleware, adoptionController.getAllAdoption);
 
